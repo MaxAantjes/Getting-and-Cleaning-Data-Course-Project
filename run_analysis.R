@@ -43,6 +43,15 @@ std <- grep("std", feat_low)+2 ## find columns in data with std.
 columns <- order(c(1, 2, c(mean), c(std))) ## List of columns we want
 data_mean_std <- data[, columns]
 
+## label the activities in the data set.
+library(dplyr)
+data_mean_std <- mutate(data_mean_std, label =
+               factor(data_mean_std[[2]], labels = act[[2]]))
+
+## Apropriately label the data set with descriptive variable names.
+
+
+
 
 
 
