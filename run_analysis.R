@@ -3,6 +3,7 @@ td = tempdir()
 temp = tempfile(tmpdir=td, fileext=".zip")
 download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip",temp)
 names <- as.vector(unzip(temp, list=TRUE)$Name)
+library(dplyr)
 
 ## Use print(names) for a list of file names.
 print(names)
@@ -44,14 +45,20 @@ columns <- order(c(1, 2, c(mean), c(std))) ## List of columns we want
 data_mean_std <- data[, columns]
 
 ## label the activities in the data set.
-library(dplyr)
 data_mean_std <- mutate(data_mean_std, label =
                factor(data_mean_std[[2]], labels = act[[2]]))
 
+## Inspect features in notepad ++ to check for abbreviations
 ## Apropriately label the data set with descriptive variable names.
-
-
-
+change_name <- function(x, original, new) {
+        for(i in 1:length(original)) {
+        x <- gsub(original[i], new[i], x)
+        }
+        return(x)
+}
+names(data_mean_std) <- change_name(names(data_mean_std), 
+                                    c("", ""), c("", ""))
+        
 
 
 
