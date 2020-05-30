@@ -1,13 +1,38 @@
-## Set up temporary directory for zip file.
+## Set up temporary directory and download zip file.
 td = tempdir()
 temp = tempfile(tmpdir=td, fileext=".zip")
 download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip",temp)
 names <- as.vector(unzip(temp, list=TRUE)$Name)
+
 ## Use print(names) for a list of file names.
 print(names)
-## Read particular file and import data into R.
-unzip(temp, files= names[7], exdir=td, overwrite=TRUE)
-fpath = file.path(td, names[7])
-read.csv(fpath)
-## Remove temporary file.
+
+## Read files and import data into R.
+unzip(temp, exdir=td, overwrite=TRUE)
+feat <- read.table(file.path(
+        td, names[2]), col.names = c("", "features"))
+act <- read.table(file.path(
+        td, names[1]), col.names = c("", "activities"))
+test_sub <- read.table(file.path(
+        td, names[16]), col.names = "subjectID")
+test_x <- read.table(file.path(
+        td, names[17]), col.names = feat[[2]])
+test_y <- read.table(file.path(
+        td, names[18]), col.names = "label")
+train_sub <- read.table(file.path(
+        td, names[30]), col.names = "subjectID")
+train_x <- read.table(file.path(
+        td, names[31]), col.names = feat[[2]])
+train_y <- read.table(file.path(
+        td, names[32]), col.names = "label") 
+
+## Delete temporary folder.
 unlink(temp)
+
+## Merge training and test sets to create 1 data set. 
+combined_x <- rbind(train_x, test_x)
+combined_y <- rbind(train_y, test_y)
+subjectID <- rbind(test_sub, train_sub)
+data <- cbind(subjectID, combined_y, combined_x)
+
+
