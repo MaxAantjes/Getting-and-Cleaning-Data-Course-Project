@@ -35,4 +35,14 @@ combined_y <- rbind(train_y, test_y)
 subjectID <- rbind(test_sub, train_sub)
 data <- cbind(subjectID, combined_y, combined_x)
 
+## Extract the measurements on the mean and standard deviation and
+## the label and IDnumber. 
+feat_low <- tolower(feat[[2]]) ## set to lower case for grep function.
+mean <- grep("mean", feat_low)+2 ## find columns in data with mean.
+std <- grep("std", feat_low)+2 ## find columns in data with std.
+columns <- order(c(1, 2, c(mean), c(std))) ## List of columns we want
+data_mean_std <- data[, columns]
+
+
+
 
