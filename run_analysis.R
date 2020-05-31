@@ -4,7 +4,6 @@ temp = tempfile(tmpdir=td, fileext=".zip")
 download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip",temp)
 names <- as.vector(unzip(temp, list=TRUE)$Name)
 library(dplyr)
-library(tidyr)
 
 ## Use print(names) for a list of file names.
 print(names)
@@ -77,3 +76,4 @@ data_mean_std$subject.id <- as.factor(data_mean_std$subject.id)
 tidy_data <- data_mean_std %>%
         group_by(subject.id, activity) %>%
         summarise_if(is.numeric, funs(mean))
+write.table(tidy_data, file = "tidy_data.text", sep = ",", row.name = FALSE)
