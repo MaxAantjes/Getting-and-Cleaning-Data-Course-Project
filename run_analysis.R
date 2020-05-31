@@ -4,6 +4,7 @@ temp = tempfile(tmpdir=td, fileext=".zip")
 download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip",temp)
 names <- as.vector(unzip(temp, list=TRUE)$Name)
 library(dplyr)
+library(tidyr)
 
 ## Use print(names) for a list of file names.
 print(names)
@@ -56,6 +57,7 @@ change_name <- function(x, original, new) {
         }
         return(x)
 }
+
 ## Apropriately label the data set with descriptive variable names.
 original <- c("label", "Gyro", "^t", "^f", "Mag", "Acc", 
         "\\.mean\\.*", "\\.std\\.*", "Freq\\.*", "Jerk", 
@@ -68,3 +70,10 @@ new <- c("activity", " gyroscope ", "time ", "frequency ",
         "subject id")
 names(data_mean_std) <- tolower(trimws(change_name(names(data_mean_std), 
                         original, new)))
+names(data_mean_std) <- gsub(" ", ".", names(data_mean_std))
+
+## Create a second data set with averages for each activity and data set.
+data_mean_std$subject.id <- as.factor(data_mean_std$subject.id)
+tidy_data <- data_mean_std %>%
+        group_by(subject.id, activity) %>%
+        summarise_if(is.numeric, funs(mean))
