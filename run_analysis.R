@@ -38,10 +38,10 @@ data <- cbind(subjectID, combined_y, combined_x)
 
 ## Extract the measurements on the mean and standard deviation and
 ## the label and IDnumber. 
-feat_low <- tolower(feat[[2]]) ## set to lower case for grep function.
-mean <- grep("mean", feat_low)+2 ## find columns in data with mean.
-std <- grep("std", feat_low)+2 ## find columns in data with std.
-columns <- order(c(1, 2, c(mean), c(std))) ## List of columns we want
+feat_low <- tolower(names(data)) ## set to lower case for grep function.
+mean <- grep("mean", feat_low) ## find columns in data with mean.
+std <- grep("std", feat_low) ## find columns in data with std.
+columns <- sort(c(1, 2, c(mean, std))) ## List of columns we want
 data_mean_std <- data[, columns]
 
 ## label the activities in the data set.
@@ -49,16 +49,22 @@ data_mean_std <- mutate(data_mean_std, label =
                factor(data_mean_std[[2]], labels = act[[2]]))
 
 ## Inspect features in notepad ++ to check for abbreviations
-## Apropriately label the data set with descriptive variable names.
+## Create function to change variable names in bulk.
 change_name <- function(x, original, new) {
         for(i in 1:length(original)) {
         x <- gsub(original[i], new[i], x)
         }
         return(x)
 }
-names(data_mean_std) <- change_name(names(data_mean_std), 
-                                    c("", ""), c("", ""))
-        
-
-
-
+## Apropriately label the data set with descriptive variable names.
+original <- c("label", "Gyro", "^t", "^f", "Mag", "Acc", 
+        "\\.mean\\.*", "\\.std\\.*", "Freq\\.*", "Jerk", 
+        "angle\\.", "tBody", "BodyBody", "Mean\\.", ".gravity",
+        "meangravity", "X", "Y", "Z", "\\.", "subjectID")
+new <- c("activity", " gyroscope ", "time ", "frequency ",
+        "magnitude ", " accelerometer ", "mean ", "std ",
+        "frequency ", "jerk ", "angle ", "time body", "body", 
+        "mean ", "gravity ", "mean gravity", "X ", "Y ", "Z ", "",
+        "subject id")
+names(data_mean_std) <- tolower(trimws(change_name(names(data_mean_std), 
+                        original, new)))
