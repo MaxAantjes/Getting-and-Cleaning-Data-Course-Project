@@ -3,8 +3,8 @@ This project is my contribution to the Getting and Cleaning Data Course Project 
 
 # Explanation of run.analysis.R
 The code will perform the following tasks in order:
-* *set up temporary directory*: A temporary directory is set up in the working directory; the raw files are downloaded and stored in the temporary directory; dplyr is loaded (this package is required for the subsequent analysis).  
-* *import data into R*: 8 text files containing are imported as tables into R. The files are imported through subsetting the names list of files in the temporary directory. For actual names of the raw files, see the Code Book.dm file. 
+* *Set up temporary directory*: A temporary directory is set up in the working directory; the raw files are downloaded and stored in the temporary directory; dplyr is loaded (this package is required for the subsequent analysis).  
+* *Import data into R*: 8 text files containing are imported as tables into R. The files are imported through subsetting the names list of files in the temporary directory. For actual names of the raw files, see the Code Book.dm file. 
 * *Delete the temporary folder*: The temporary folder is deleted. 
 * *Merging of tables*: the rows of training and test tables (6 files total) are merged using the rbind command. The resulting three merged tables are merged into a new table using the cbind command. 
 * *Selection of Variables of Interest*: the collumns containing mean and standard deviation information are identified using the grep function on the variable list (accessible through the names function). Those columns in addition to participant id and label (later activity) are then subsetted. 
