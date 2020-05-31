@@ -10,7 +10,7 @@ The code will perform the following tasks in order:
 * *Selection of Variables of Interest*: the collumns containing mean and standard deviation information are identified using the grep function on the variable list (accessible through the names function). Those columns in addition to participant id and label (later activity) are then subsetted. 
 * *Labeling* label is transformed into a factor variable with its 6 integer values being bound to character strings. 
 * *Tidying Names* Names are tidied through a loop gsub function called change_name. All variable names are changed to lower case and any spaces are replaced with periods to simplify the process of calling and reading variables.
-* *Generate Narrow Data Set* A narrow data set is created using the group_by and summarise_if functions. This data set reflects the mean of the continuous variables for each activity per participant. The data set is saved as a .txt file in the working directory. 
+* *Generate Narrow Data Set* A narrow data set is created using the group_by and summarise_if functions. This data set reflects the mean of the continuous variables for each activity per participant. The data set is saved as a .txt file in the working directory. This file is also available in the repository as the tidy_data.text file. 
 
 # Acknowledgements
 Zip file extraction based on: https://hydroecology.net/downloading-extracting-and-reading-files-in-r/  
